@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 // Use environment variable for production (set in Vercel dashboard)
 // Fallback to localhost only for local development
 const SOCKET_URL =
-  process.env.https://skillmatch-2-1094.onrender.com || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export const socket = io(SOCKET_URL, {
   transports: ["websocket", "polling"],
