@@ -11,6 +11,9 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
+const JWT_SECRET = process.env.JWT_SECRET || "skillmatch-dev-secret";
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
+let isDatabaseReady = false;
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -46,9 +49,34 @@ app.use(express.json({ limit: "50mb" }));
    ✅ MongoDB Connection
 ================================ */
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/skillmatch")
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ MongoDB Error:", err));
+  .connect(MONGO_URI || "mongodb://127.0.0.1:27017/skillmatch", {
+    serverSelectionTimeoutMS: 10000,
+  })
+  .then(() => {
+    isDatabaseReady = true;
+    console.log("✅ MongoDB Connected");
+  })
+  .catch((err) => {
+    isDatabaseReady = false;
+    console.log("❌ MongoDB Error:", err?.message || err);
+  });
+
+mongoose.connection.on("connected", () => {
+  isDatabaseReady = true;
+});
+
+mongoose.connection.on("disconnected", () => {
+  isDatabaseReady = false;
+});
+
+app.use("/api", (req, res, next) => {
+  if (!isDatabaseReady) {
+    return res.status(503).json({
+      error: "Database unavailable. Configure MONGO_URI or MONGODB_URI on backend.",
+    });
+  }
+  return next();
+});
 
 /* ================================
    ✅ Schemas
@@ -157,7 +185,7 @@ function authMiddleware(req, res, next) {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.status(401).json({ error: "No token provided" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
@@ -200,6 +228,7 @@ app.post("/api/register", async (req, res) => {
 
     res.json({ message: "Registered successfully" });
   } catch (err) {
+    console.error("Register route error:", err?.message || err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -214,7 +243,7 @@ app.post("/api/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -233,7 +262,8 @@ app.post("/api/login", async (req, res) => {
         projects: user.projects || [],
       },
     });
-  } catch {
+  } catch (err) {
+    console.error("Login route error:", err?.message || err);
     res.status(500).json({ error: "Server error" });
   }
 });
