@@ -1,6 +1,7 @@
 // components/FloatingChat.tsx
 import React, { useState, useEffect } from "react";
 import ChatBox from "./ChatBox"; // use your existing ChatBox
+import { API_BASE_URL } from "../../config/api";
 type UserType = {
   _id: string;
   name: string;
@@ -21,7 +22,7 @@ const FloatingChat = () => {
     setLoggedInUser(user);
 
     const token = localStorage.getItem("token") || "";
-    fetch("http://localhost:5000/api/users", { headers: { Authorization: `Bearer ${token}` } })
+    fetch(`${API_BASE_URL}/api/users`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then((users: UserType[]) => {
         // pick the first user who is not the logged-in user

@@ -1,11 +1,7 @@
-
-export default socket;// socket.ts
 import { io } from "socket.io-client";
+import { API_BASE_URL } from "./config/api";
 
-// Use environment variable for production (set in Vercel dashboard)
-// Fallback to localhost only for local development
-const SOCKET_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || API_BASE_URL;
 
 export const socket = io(SOCKET_URL, {
   transports: ["websocket", "polling"],
@@ -13,10 +9,9 @@ export const socket = io(SOCKET_URL, {
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
   autoConnect: true,
-  withCredentials: true, // important if using auth/cookies
+  withCredentials: true,
 });
 
-// Optional: Log connection status (good for debugging)
 socket.on("connect", () => {
   console.log("Socket connected to:", SOCKET_URL);
 });

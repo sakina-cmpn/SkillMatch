@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { socket } from "../../socket";
+import { API_BASE_URL } from "../../config/api";
 
 // ---------------------- TYPES ----------------------
 type UserType = {
@@ -45,7 +46,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ loggedInUser, chatWithUser }) => {
         // Fetch previous messages
         const token = localStorage.getItem("token") || "";
         axios
-            .get(`http://localhost:5000/api/messages/${chatWithUser._id}`, {
+            .get(`${API_BASE_URL}/api/messages/${chatWithUser._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => setMessages(res.data))
@@ -76,7 +77,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ loggedInUser, chatWithUser }) => {
         try {
             const token = localStorage.getItem("token") || "";
             await axios.post(
-                "http://localhost:5000/api/messages/send",
+                `${API_BASE_URL}/api/messages/send`,
                 {
                     receiverId: chatWithUser._id,
                     text: input,

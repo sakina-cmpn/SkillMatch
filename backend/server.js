@@ -12,10 +12,31 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.FRONTEND_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+]
+  .filter(Boolean)
+  .flatMap((origin) => String(origin).split(","))
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+};
+
 /* ================================
    ✅ MIDDLEWARE
 ================================ */
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 
 /* ================================
@@ -29,7 +50,13 @@ mongoose
 /* ================================
    ✅ Schemas
 ================================ */
-
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'SkillMatch Backend API is live 🚀',
+    status: 'online',
+    version: '1.0.0'
+  });
+});
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -516,8 +543,9 @@ app.get("/api/messages/:otherUserId", authMiddleware, async (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
   // Allow larger realtime payloads for base64 file attachments.
   maxHttpBufferSize: 5e7,

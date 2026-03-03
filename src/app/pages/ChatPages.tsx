@@ -1,6 +1,7 @@
 // src/pages/ChatPage.tsx
 import { useState, useEffect } from "react";
 import ChatBox from "../components/ChatBox";
+import { API_BASE_URL } from "../../config/api";
 
 type UserType = {
     _id: string;
@@ -22,7 +23,7 @@ const ChatPage: React.FC = () => {
 
         // Fetch other users
         const token = localStorage.getItem("token") || "";
-        fetch("http://localhost:5000/api/users", { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_BASE_URL}/api/users`, { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => res.json())
             .then((users: UserType[]) => {
                 // Pick the first user that's not the logged-in user
