@@ -1,0 +1,40 @@
+Ultra-high-resolution cinematic product showcase mockup of the complete "SkillMatch" web application — a modern, clean skill-matching platform connecting students, learners, professionals and mentors for instant expertise help. Designed in premium 2026 SaaS light-mode UI/UX style (inspired by Linear, Vercel, Supabase, Notion, Framer, Raycast).
+
+Strict light mode color system:
+- Backgrounds: soft gradient #F8FAFC → #FFFFFF
+- Cards / surfaces: #FFFFFF with 1px #E2E8F0 borders + gentle layered shadows
+- Primary text / headings: deep navy #052659
+- Secondary / muted text: slate #475569 / #64748B
+- Primary buttons / active / links: vibrant blue #5483B3
+- Hover / highlights / focus / subtle accents: soft cyan #C1E8FF
+- Success: fresh green #10B981
+
+Show a single elegant multi-view composition like a Figma landing / hero showcase:
+Central large browser window = main Dashboard:
+- Top sticky nav: SkillMatch logo (#052659), wide centered search bar "Search any skill or tech…", user avatar + notifications bell
+- Left sidebar: icons + labels → Home, My Profile, Search Experts, Requests, Messages, Skill Gaps, Settings
+- Main area: hero search + filter chips (Proficiency • Availability • Location • Role) + grid of expert profile cards (avatar, name #052659, skill tags pills, proficiency stars, availability badge, "Request Help" button #5483B3)
+
+Surrounding the dashboard (arranged elegantly like floating frames / inset browser windows / angled 3D previews):
+- My Profile page: avatar upload, editable name/bio, skill tags input, proficiency sliders, endorsements list, Save button #5483B3
+- Search Experts page: filters sidebar open, large results grid with detailed profile cards + "Request Help" CTAs
+- Requests page: inbox list of help requests (sender, skill, context, status badges pending/accepted, accept/decline buttons #5483B3)
+- Messages page: split chat UI — conversation list left, active thread right (bubbles, typing, video call + screen share icons #5483B3)
+- Skill Gaps page: analytics dashboard — bar/pie charts, heatmaps, alert cards "Only 3 experts in AI"
+- Settings page: form sections (account, notifications toggles, privacy, integrations, danger zone delete button)
+- Feedback / Rating modal overlay: 5-star interactive rating + comment box + Submit button #5483B3
+
+Style & quality:
+- Glassmorphism cards with soft inner glow + depth shadows
+- 16–20px rounded corners, generous whitespace, pixel-perfect alignment
+- Hover states: lift + #C1E8FF glow, buttons scale + brighter #5483B3
+- Clean minimal line icons tinted #5483B3 / #C1E8FF
+- Modern sans-serif typography (Inter / SF Pro), perfect hierarchy
+- Subtle micro-interaction hints (glows, lifts, focus rings)
+
+Composition: balanced cinematic layout, soft natural lighting, slight 3D perspective on secondary windows, vector-sharp, ultra-detailed, 16:9 landscape, pitch-deck / portfolio hero quality.
+
+Top center title overlay in deep navy #052659 elegant font with subtle #C1E8FF shadow:
+"SkillMatch – Complete Light Mode Website Experience"
+
+Strict colors only: #052659 #5483B3 #C1E8FF + light neutrals. No dark mode, no extra colors.
