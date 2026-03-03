@@ -25,7 +25,10 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    const isVercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(
+      origin || ""
+    );
+    if (!origin || allowedOrigins.includes(origin) || isVercelPreview) {
       return callback(null, true);
     }
     return callback(new Error(`CORS blocked for origin: ${origin}`));
@@ -543,7 +546,15 @@ app.get("/api/messages/:otherUserId", authMiddleware, async (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin(origin, callback) {
+      const isVercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(
+        origin || ""
+      );
+      if (!origin || allowedOrigins.includes(origin) || isVercelPreview) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Socket CORS blocked for origin: ${origin}`));
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
